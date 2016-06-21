@@ -949,7 +949,7 @@ namespace vrt {
      *          <tt>PayloadFormat_UINT16</tt>, <tt>PayloadFormat_UINT32</tt>,   <tt>PayloadFormat_UINT64</tt>.
      *  @throws VRTException If the length is invalid.
      */
-    public: void setData (const PayloadFormat &pf, const void *array, int32_t length, bool convert=true);
+    public: void setData (const PayloadFormat &pf, const void *arr, int32_t length, bool convert=true);
 
     /** Packs the data using the values from a double array. If the underlying data is not double,
      *  it will be converted from double and any values that fall outside of the range of a of the

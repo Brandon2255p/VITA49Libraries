@@ -343,7 +343,7 @@ void __attribute__((hot)) *BasicDataPacket::getData (const PayloadFormat &pf, vo
 	return array;
 }
 
-void __attribute__((hot)) BasicDataPacket::setData (const PayloadFormat &pf, const void *array, int32_t len, bool convert) {
+void __attribute__((hot)) BasicDataPacket::setData (const PayloadFormat &pf, const void *arr, int32_t len, bool convert) {
 	DataType type = pf.getDataType();
 
 	if (type == -1) {
@@ -364,11 +364,11 @@ void __attribute__((hot)) BasicDataPacket::setData (const PayloadFormat &pf, con
 
 	if (!convert || (size <= 8) || (BYTE_ORDER == BIG_ENDIAN)) {
 		// Able to use a basic memory copy
-		memcpy(&bbuf[off], array, len);
+		memcpy(&bbuf[off], arr, len);
 	}
 	else if (size == 16) {
 		// LITTLE_ENDIAN -> BIG_ENDIAN
-		int16_t *src  = ((int16_t*)array);
+		int16_t *src  = ((int16_t*)arr);
 		int16_t *dest = ((int16_t*)&bbuf[off]);
 
 		for (int32_t i = 0; i < len/2; i++) {
@@ -377,7 +377,7 @@ void __attribute__((hot)) BasicDataPacket::setData (const PayloadFormat &pf, con
 	}
 	else if (size == 32) {
 		// LITTLE_ENDIAN -> BIG_ENDIAN
-		int32_t *src  = ((int32_t*)array);
+		int32_t *src  = ((int32_t*)arr);
 		int32_t *dest = ((int32_t*)&bbuf[off]);
 
 		for (int32_t i = 0; i < len/4; i++) {
@@ -386,7 +386,7 @@ void __attribute__((hot)) BasicDataPacket::setData (const PayloadFormat &pf, con
 	}
 	else { // size == 64
 		// LITTLE_ENDIAN -> BIG_ENDIAN
-		int64_t *src  = ((int64_t*)array);
+		int64_t *src  = ((int64_t*)arr);
 		int64_t *dest = ((int64_t*)&bbuf[off]);
 
 		for (int64_t i = 0; i < len/8; i++) {
