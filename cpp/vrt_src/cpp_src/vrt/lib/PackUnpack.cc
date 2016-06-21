@@ -21425,13 +21425,14 @@ static __attribute__((flatten)) void packFloats (void *ptr, int32_t off, const i
  */
 static __attribute__((flatten)) void unpackLongs (const void *ptr, int32_t off, int64_t *array, int32_t offset, int32_t length, int32_t fSize, int32_t dSize, bool align, bool sign) {
   const char *buf = (const char*)ptr;
-#if (8 == 1) || (BYTE_ORDER == BIG_ENDIAN)
-  if ((fSize == 64) && (dSize == 64)) {
-    // Fast array copy
-    memcpy(&array[offset], &buf[off], length*8);
-    return;
+  if ((8 == 1) || (BYTE_ORDER == BIG_ENDIAN))
+  {
+	  if ((fSize == 64) && (dSize == 64)) {
+		  // Fast array copy
+		  memcpy(&array[offset], &buf[off], length * 8);
+		  return;
+	  }
   }
-#endif
   int32_t delta = (align)? ((fSize <= 32)? 4 : 8) : (fSize/8); // int8_t offset delta
   if (sign) {
     if (dSize == 64) {
@@ -21473,13 +21474,14 @@ static __attribute__((flatten)) void unpackLongs (const void *ptr, int32_t off, 
  */
 static __attribute__((flatten)) void packLongs (void *ptr, int32_t off, const int64_t *array, int32_t offset, int32_t length, int32_t fSize, int32_t dSize, bool align, bool sign) {
   char *buf = (char*)ptr;
-#if (8 == 1) || (BYTE_ORDER == BIG_ENDIAN)
-  if ((fSize == 64) && (dSize == 64)) {
-    // Fast array copy
-    memcpy(&buf[off], &array[offset], length*8);
-    return;
+  if ((8 == 1) || (BYTE_ORDER == BIG_ENDIAN))
+  {
+	  if ((fSize == 64) && (dSize == 64)) {
+		  // Fast array copy
+		  memcpy(&buf[off], &array[offset], length * 8);
+		  return;
+	  }
   }
-#endif
   int32_t delta = (align)? ((fSize <= 32)? 4 : 8) : (fSize/8); // int8_t offset delta
   int64_t valMask = (sign)? ((int64_t)-1) : ((int64_t)__INT64_C(0xFFFFFFFFFFFFFFFF)); // Bit mask for input value (controls sign-extend)
   if (dSize == 64) {
@@ -32186,14 +32188,15 @@ static __attribute__((flatten)) void packLongs (void *ptr, int32_t off, const in
  *  @param sign   (IN)  Is value signed (true) or unsigned (false)?
  */
 static __attribute__((flatten)) void unpackInts (const void *ptr, int32_t off, int32_t *array, int32_t offset, int32_t length, int32_t fSize, int32_t dSize, bool align, bool sign) {
-  const char *buf = (const char*)ptr;
-#if (4 == 1) || (BYTE_ORDER == BIG_ENDIAN)
-  if ((fSize == 32) && (dSize == 32)) {
-    // Fast array copy
-    memcpy(&array[offset], &buf[off], length*4);
-    return;
-  }
-#endif
+	const char *buf = (const char*)ptr;
+	if ((4 == 1) || (BYTE_ORDER == BIG_ENDIAN))
+	{
+		if ((fSize == 32) && (dSize == 32)) {
+			// Fast array copy
+			memcpy(&array[offset], &buf[off], length * 4);
+			return;
+		}
+	}
   int32_t delta = (align)? ((fSize <= 32)? 4 : 8) : (fSize/8); // int8_t offset delta
   if (sign) {
     if (dSize == 32) {
@@ -32235,13 +32238,14 @@ static __attribute__((flatten)) void unpackInts (const void *ptr, int32_t off, i
  */
 static __attribute__((flatten)) void packInts (void *ptr, int32_t off, const int32_t *array, int32_t offset, int32_t length, int32_t fSize, int32_t dSize, bool align, bool sign) {
   char *buf = (char*)ptr;
-#if (4 == 1) || (BYTE_ORDER == BIG_ENDIAN)
-  if ((fSize == 32) && (dSize == 32)) {
-    // Fast array copy
-    memcpy(&buf[off], &array[offset], length*4);
-    return;
+  if ((4 == 1) || (BYTE_ORDER == BIG_ENDIAN))
+  {
+	  if ((fSize == 32) && (dSize == 32)) {
+		  // Fast array copy
+		  memcpy(&buf[off], &array[offset], length * 4);
+		  return;
+	  }
   }
-#endif
   int32_t delta = (align)? ((fSize <= 32)? 4 : 8) : (fSize/8); // int8_t offset delta
   int32_t valMask = (sign)? ((int32_t)-1) : ((int32_t)__INT64_C(0xFFFFFFFF)); // Bit mask for input value (controls sign-extend)
   if (dSize == 32) {
@@ -43045,13 +43049,14 @@ static __attribute__((flatten)) void packInt24s (void *ptr, int32_t off, const i
  */
 static __attribute__((flatten)) void unpackShorts (const void *ptr, int32_t off, int16_t *array, int32_t offset, int32_t length, int32_t fSize, int32_t dSize, bool align, bool sign) {
   const char *buf = (const char*)ptr;
-#if (2 == 1) || (BYTE_ORDER == BIG_ENDIAN)
-  if ((fSize == 16) && (dSize == 16)) {
-    // Fast array copy
-    memcpy(&array[offset], &buf[off], length*2);
-    return;
+  if ((2 == 1) || (BYTE_ORDER == BIG_ENDIAN))
+  {
+	  if ((fSize == 16) && (dSize == 16)) {
+		  // Fast array copy
+		  memcpy(&array[offset], &buf[off], length * 2);
+		  return;
+	  }
   }
-#endif
   int32_t delta = fSize / 8; // int8_t offset delta
   if (sign) {
     if (dSize == 16) {
@@ -43093,13 +43098,14 @@ static __attribute__((flatten)) void unpackShorts (const void *ptr, int32_t off,
  */
 static __attribute__((flatten)) void packShorts (void *ptr, int32_t off, const int16_t *array, int32_t offset, int32_t length, int32_t fSize, int32_t dSize, bool align, bool sign) {
   char *buf = (char*)ptr;
-#if (2 == 1) || (BYTE_ORDER == BIG_ENDIAN)
-  if ((fSize == 16) && (dSize == 16)) {
-    // Fast array copy
-    memcpy(&buf[off], &array[offset], length*2);
-    return;
+  if ((2 == 1) || (BYTE_ORDER == BIG_ENDIAN))
+  {
+	  if ((fSize == 16) && (dSize == 16)) {
+		  // Fast array copy
+		  memcpy(&buf[off], &array[offset], length * 2);
+		  return;
+	  }
   }
-#endif
   int32_t delta = fSize / 8; // int8_t offset delta
   int16_t valMask = (sign)? ((int16_t)-1) : ((int16_t)__INT64_C(0xFFFF)); // Bit mask for input value (controls sign-extend)
   if (dSize == 16) {
@@ -53870,13 +53876,14 @@ static void packInt12s (void *ptr, int32_t off, const int8_t *array, int32_t off
  */
 static __attribute__((flatten)) void unpackBytes (const void *ptr, int32_t off, int8_t *array, int32_t offset, int32_t length, int32_t fSize, int32_t dSize, bool align, bool sign) {
   const char *buf = (const char*)ptr;
-#if (1 == 1) || (BYTE_ORDER == BIG_ENDIAN)
-  if ((fSize == 8) && (dSize == 8)) {
-    // Fast array copy
-    memcpy(&array[offset], &buf[off], length*1);
-    return;
+  if ((1 == 1) || (BYTE_ORDER == BIG_ENDIAN))
+  {
+	  if ((fSize == 8) && (dSize == 8)) {
+		  // Fast array copy
+		  memcpy(&array[offset], &buf[off], length * 1);
+		  return;
+	  }
   }
-#endif
   int32_t delta = fSize / 8; // int8_t offset delta
   if (sign) {
     if (dSize == 8) {
@@ -53918,13 +53925,14 @@ static __attribute__((flatten)) void unpackBytes (const void *ptr, int32_t off, 
  */
 static __attribute__((flatten)) void packBytes (void *ptr, int32_t off, const int8_t *array, int32_t offset, int32_t length, int32_t fSize, int32_t dSize, bool align, bool sign) {
   char *buf = (char*)ptr;
-#if (1 == 1) || (BYTE_ORDER == BIG_ENDIAN)
-  if ((fSize == 8) && (dSize == 8)) {
-    // Fast array copy
-    memcpy(&buf[off], &array[offset], length*1);
-    return;
+  if ((1 == 1) || (BYTE_ORDER == BIG_ENDIAN))
+  {
+	  if ((fSize == 8) && (dSize == 8)) {
+		  // Fast array copy
+		  memcpy(&buf[off], &array[offset], length * 1);
+		  return;
+	  }
   }
-#endif
   int32_t delta = fSize / 8; // int8_t offset delta
   int8_t valMask = (sign)? ((int8_t)-1) : ((int8_t)__INT64_C(0xFF)); // Bit mask for input value (controls sign-extend)
   if (dSize == 8) {
