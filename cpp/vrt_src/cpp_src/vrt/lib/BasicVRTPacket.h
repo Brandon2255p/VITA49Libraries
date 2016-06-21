@@ -21,6 +21,16 @@
 #ifndef BasicVRTPacket_h
 #define BasicVRTPacket_h
 
+#define VRT_DLL
+#ifndef __UNIX__
+#undef VRT_DLL
+	#ifdef VRT_EXPORTS
+	#define VRT_DLL __declspec(dllexport)
+	#else
+	#define VRT_DLL __declspec(dllimport)
+	#endif
+#endif
+
 #include "VRTObject.h"
 #include "MetadataBlock.h"
 #include "Utilities.h"
@@ -931,7 +941,7 @@ namespace vrt {
    *    ----+----------------------+---------------
    *  </pre>
    */
-  class PayloadFormat : public VRTObject, public HasFields {
+  class VRT_DLL PayloadFormat : public VRTObject, public HasFields {
     // We simulate a null value for a PayloadFormat by setting the reserved bits
     // (which must be 0x0 in ANSI/VITA-49.0) to 0xF. We need to do this in the
     // C++ version since the hi=0,lo=0 is a valid PayloadFormat (though one that
