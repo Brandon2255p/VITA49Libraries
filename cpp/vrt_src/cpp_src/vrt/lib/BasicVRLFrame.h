@@ -21,6 +21,15 @@
 #ifndef BasicVRLFrame_h
 #define BasicVRLFrame_h
 
+#define VRT_DLL
+#ifndef __UNIX__
+	#undef VRT_DLL
+	#ifdef VRT_EXPORTS
+	#define VRT_DLL __declspec(dllexport)
+	#else
+	#define VRT_DLL __declspec(dllimport)
+	#endif
+#endif
 #include "VRTObject.h"
 #include "VRTMath.h"
 #include "BasicVRTPacket.h"
@@ -36,7 +45,7 @@ namespace vrt {
    *
    *  @author         
    */
-  class BasicVRLFrame : public VRTObject {
+	class VRT_DLL BasicVRLFrame : public VRTObject {
 
     /**  The length of the header in bytes.
      *  <pre>

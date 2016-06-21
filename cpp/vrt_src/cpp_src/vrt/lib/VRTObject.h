@@ -21,6 +21,15 @@
 #ifndef _VRTObject_h
 #define _VRTObject_h
 
+#define VRT_DLL
+#ifndef __UNIX__
+	#undef VRT_DLL
+	#ifdef VRT_EXPORTS
+	#define VRT_DLL __declspec(dllexport)
+	#else
+	#define VRT_DLL __declspec(dllimport)
+	#endif
+#endif
 #include <cctype>
 #include <climits>
 #include <exception>
@@ -136,22 +145,22 @@ namespace vrt {
    *  which is unlikely to be used in the normal course of events. In Java the <tt>Byte</tt> class
    *  would be used which can hold any 8-bit integer or could be null.
    */
-  const int8_t  INT8_NULL  = numeric_limits<char>::min();
+  const int8_t  INT8_NULL = INT8_MIN;// numeric_limits<char>::min();
   /** A pseudo-null value for a 16-bit integer. This value is equal to <tt>-32768</tt>
    *  which is unlikely to be used in the normal course of events. In Java the <tt>Short</tt> class
    *  would be used which can hold any 16-bit integer or could be null.
    */
-  const int16_t INT16_NULL = numeric_limits<int16_t>::min();
+  const int16_t INT16_NULL = INT16_MIN;// numeric_limits<int16_t>::min();
   /** A pseudo-null value for a 32-bit integer. This value is equal to <tt>-2147483648</tt>
    *  which is unlikely to be used in the normal course of events. In Java the <tt>Integer</tt> class
    *  would be used which can hold any 32-bit integer or could be null.
    */
-  const int32_t INT32_NULL = numeric_limits<int32_t>::min();
+  const int32_t INT32_NULL = INT32_MIN;// numeric_limits<int32_t>::min();
   /** A pseudo-null value for a 64-bit integer. This value is equal to <tt>-9223372036854775808</tt>
    *  which is unlikely to be used in the normal course of events. In Java the <tt>Long</tt> class
    *  would be used which can hold any 64-bit integer or could be null.
    */
-  const int64_t INT64_NULL = numeric_limits<int64_t>::min();
+  const int64_t INT64_NULL = INT64_MIN;// numeric_limits<int64_t>::min();
   /** A pseudo-null value for a 32-bit floating-point value. This value is equal to <tt>NaN</tt>
    *  which is unlikely to be used in the normal course of events. In Java the <tt>Float</tt> class
    *  would be used which can hold any 32-bit floating-point (including NaN) or could be null. <br>
@@ -194,7 +203,7 @@ namespace vrt {
    *  <tt>Object</tt> class and allows subclasses to more-closely follow their Java counterparts.
    *  @author         
    */
-  class VRTObject {
+  class VRT_DLL VRTObject {
     /** Basic copy constructor. */
     public: VRTObject(const VRTObject &o) { }
     /** Basic no-argument constructor. */
@@ -255,7 +264,7 @@ namespace vrt {
    *  the exception types (e.g. <tt>NullPointerException</tt>, <tt>IllegalArgumentException</tt>, etc.).
    *  @author 
    */
-  class VRTException : public virtual VRTObject, public virtual exception {
+  class VRT_DLL VRTException : public virtual VRTObject, public virtual exception {
     private: string         message;     // The error message
     private: string         description; // Description of error with class name and message
     private: vector<string> backtrace;   // The back-trace (if available)
@@ -326,6 +335,9 @@ namespace vrt {
    *  @author 
    */
   class ClassCastException : public virtual VRTException, public virtual bad_cast {
+	
+    public: ClassCastException(const ClassCastException& other) throw();
+
     /** Constructs an exception with the specified message. */
     public: ClassCastException (string msg) throw();
 
@@ -366,8 +378,7 @@ namespace vrt {
     if (p == NULL) {
       const char* srcName  = typeid(C).name();
       const char* destName = typeid(T).name();
-      string msg  = VRTObject_private::getClassName(srcName)+" can not be cast to "
-                  + VRTObject_private::getClassName(destName);
+      string msg  = VRTObject_private::getClassName(srcName)+" can not be cast to " + VRTObject_private::getClassName(destName);
       
       throw ClassCastException(msg);
     }
