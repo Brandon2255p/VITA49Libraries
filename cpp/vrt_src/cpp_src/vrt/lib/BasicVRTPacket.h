@@ -37,13 +37,20 @@
 #include "TimeStamp.h"
 #include "Record.h"
 #include "VRTMath.h"
-#include "InetAddress.h"
-#include "UUID.h"
+#include "UniversallyUID.h"
 #include "HasFields.h"
 #include "Record.h"
-
+#ifndef __UNIX__
+	#include "BaseTsd.h"
+	typedef SSIZE_T ssize_t;
+#else
+	#include "InetAddress.h"
+#endif
+#include <stdexcept>
 //#include <bitset>
-
+#ifdef ERROR //Windows has a ERROR defined in a header which needed to be undefined so that the keyword could be used within this class.
+#undef ERROR
+#endif
 using namespace std;
 
 
@@ -117,7 +124,7 @@ namespace vrt {
   };
 
   /** Data types supported by a <tt>StandardDataPacket</tt>. */
-  enum DataType {
+  enum DataType : uint64_t {
     /**  4-bit signed integer.                      */  DataType_Int4       = __INT64_C(0x00FFFFFA00010000),
     /**  8-bit signed integer.                      */  DataType_Int8       = __INT64_C(0x00FFFFFA00020000),
     /** 16-bit signed integer.                      */  DataType_Int16      = __INT64_C(0x00FFFFFA00030000),
@@ -345,7 +352,7 @@ namespace vrt {
       try {
         return equals(*checked_dynamic_cast<const BasicVRTPacket*>(&o));
       }
-      catch (bad_cast &e) {
+      catch (...) {
         return false;
       }
     }
@@ -833,9 +840,9 @@ namespace vrt {
     /** Packs a {@link TimeStamp} into the payload of the packet. */
     protected: inline void packPayloadTimeStamp (int32_t off, TimeStamp           val, IntegerMode epoch) { VRTMath::packTimeStamp(bbuf, getHeaderLength()+off, val, epoch); }
     /** Packs a {@link InetAddress} into the payload of the packet. */
-    protected: inline void packPayloadInetAddr  (int32_t off, InetAddress         val                   ) { VRTMath::packInetAddr( bbuf, getHeaderLength()+off, val); }
-    /** Packs a {@link UUID} into the payload of the packet. */
-    protected: inline void packPayloadUUID      (int32_t off, UUID                val                   ) { VRTMath::packUUID(     bbuf, getHeaderLength()+off, val); }
+   // protected: inline void packPayloadInetAddr  (int32_t off, InetAddress         val                   ) { VRTMath::packInetAddr( bbuf, getHeaderLength()+off, val); }
+    /** Packs a {@link UniversallyUID} into the payload of the packet. */
+    protected: inline void packPayloadUniversallyUID      (int32_t off, UniversallyUID                val                   ) { VRTMath::packUniversallyUID(     bbuf, getHeaderLength()+off, val); }
 
     /** Packs an ASCII string into the payload of the packet. */
     protected: inline void packPayloadAscii (int32_t off, string val, int32_t len) {
@@ -907,9 +914,9 @@ namespace vrt {
     /** Unpacks a {@link TimeStamp} from the payload of the packet. */
     protected: inline TimeStamp     unpackPayloadTimeStamp (int32_t off, IntegerMode epoch     ) const { return VRTMath::unpackTimeStamp(bbuf, getHeaderLength()+off, epoch); }
     /** Unpacks a {@link InetAddress} from the payload of the packet. */
-    protected: inline InetAddress   unpackPayloadInetAddr  (int32_t off                        ) const { return VRTMath::unpackInetAddr( bbuf, getHeaderLength()+off); }
-    /** Unpacks a {@link UUID} from the payload of the packet. */
-    protected: inline UUID          unpackPayloadUUID      (int32_t off                        ) const { return VRTMath::unpackUUID(     bbuf, getHeaderLength()+off); }
+  //  protected: inline InetAddress   unpackPayloadInetAddr  (int32_t off                        ) const { return VRTMath::unpackInetAddr( bbuf, getHeaderLength()+off); }
+    /** Unpacks a {@link UniversallyUID} from the payload of the packet. */
+    protected: inline UniversallyUID          unpackPayloadUniversallyUID      (int32_t off                        ) const { return VRTMath::unpackUniversallyUID(     bbuf, getHeaderLength()+off); }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
     // Implement HasFields
