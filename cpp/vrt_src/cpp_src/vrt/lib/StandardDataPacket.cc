@@ -19,7 +19,9 @@
  */
 
 #include "StandardDataPacket.h"
-
+#ifdef ERROR
+#undef ERROR
+#endif
 static const int64_t ERROR = __INT64_C(-1);
 
 static const int64_t ID_TO_FORMAT[] = {

@@ -29,6 +29,10 @@
 using namespace std;
 using namespace vrt;
 
+#ifndef __UNIX__
+#define snprintf(buf, len, fmt, ...) _snprintf_s(buf, len, fmt, __VA_ARGS__)
+#endif
+
 LeapSeconds* LeapSeconds::defaultInstance;
 
 static const size_t  PRE_1972_LENGTH    = 13;

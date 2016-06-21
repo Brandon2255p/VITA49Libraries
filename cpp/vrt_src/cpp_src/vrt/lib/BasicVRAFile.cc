@@ -22,7 +22,12 @@
 #include <limits.h>   // for realpath(..)
 #include <stdio.h>    // for fopen(..) / fclose(..) / et.al.
 #include <stdlib.h>   // for realpath(..)
+#ifndef __UNIX__
+#include <direct.h>
+#define getcwd(buffer, maxlen) _getcwd(buffer, maxlen)
+#else
 #include <unistd.h>   // for getcwd(..)
+#endif
 #include <errno.h>    // Required when using errno / ERRNO_STR
 
 using namespace vrt;
@@ -37,7 +42,7 @@ using namespace vrt;
 // Per the realpath(..) man page, not all systems have PATH_MAX defined. If this
 // is the case, just issue a warning and use a max of 4096. (The warning may be
 // removed in the future if this gets a lot of testing and seems fine.)
-#  warning "Using PATH_MAX=4096"
+#pragma message("Using PATH_MAX=4096")
 #  define PATH_MAX 4096
 #endif
 
@@ -109,9 +114,9 @@ static string toURI (string fname) {
   
   // Get absolute path
 #if defined(_WIN32)
-# warning "Windows version of toURI(..) is untested"
+#pragma message("Windows version of toURI(..) is untested")
   // Get absolute path
-  if ((fname[0] != '/') && (fname[0] != '\\') && ((fname.size() < 3) || (fname[1] != ':')) {
+  if ((fname[0] != '/') && (fname[0] != '\\') && ((fname.size() < 3) || (fname[1] != ':'))) {
     char cwd[PATH_MAX];
     
     if (getcwd(cwd, PATH_MAX) == NULL) {
@@ -168,8 +173,8 @@ void BasicVRAFile::open () {
   // just verifies support for fdatasync(..) (per man page), so we could add
   // a limited capability (e.g. using fsync(..) for any synch operation, when
   // available) in the future.
-# warning "No support for synchronized file I/O, use of BasicVRAFile restricted \
-           to Read/Write/ReadWrite."
+#pragma message("No support for synchronized file I/O, use of BasicVRAFile restricted \
+           to Read/Write/ReadWrite.")
   if (((mode & FileMode_SYNCH_DATA) != 0) || ((mode & FileMode_SYNCH_META) != 0)) {
     throw VRTException(string("Use of synchronized file I/O is disabled, use of "
                               "BasicVRAFile restricted to Read/Write/ReadWrite, "

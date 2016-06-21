@@ -20,6 +20,7 @@
 
 #include <cstring>
 #include "BasicVRLFrame.h"
+#include <algorithm>    // std::min
 using namespace vrt;
 
 BasicVRLFrame::~BasicVRLFrame () {

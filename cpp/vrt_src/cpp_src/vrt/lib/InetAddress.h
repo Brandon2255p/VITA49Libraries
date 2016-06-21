@@ -23,7 +23,13 @@
 
 #include "VRTObject.h"
 #include "HasFields.h"
-#include <netinet/in.h>
+#ifndef __UNIX__
+	
+	#include <Winsock2.h>
+	#include <Ws2ipdef.h>
+#else
+	#include <netinet/in.h>
+#endif
 
 namespace vrt {
   /** An IPv4 or IPv6 internet address.
