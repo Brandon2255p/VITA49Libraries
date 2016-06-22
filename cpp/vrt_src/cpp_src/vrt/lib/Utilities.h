@@ -257,7 +257,7 @@ namespace vrt {
         if (vec[i] == val) return i;
         if (vec[i] >  val) return -i-1;
       }
-      return -vec.size();
+      return -1*(vec.size());
     }
   };
 };

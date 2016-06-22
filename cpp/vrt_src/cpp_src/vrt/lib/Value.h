@@ -93,7 +93,7 @@ namespace vrt {
       try {
         return equals(*checked_dynamic_cast<const Value*>(&o));
       }
-      catch (bad_cast &e) {
+      catch (...) {
         return false;
       }
     }

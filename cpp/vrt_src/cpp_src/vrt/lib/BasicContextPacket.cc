@@ -20,7 +20,7 @@
 
 #include "BasicContextPacket.h"
 #include <bitset> // includes the popcount functions
-
+#include <algorithm>    // std::min
 using namespace vrt;
 using namespace private_BasicContextPacket;
 
