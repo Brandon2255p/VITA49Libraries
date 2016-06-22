@@ -144,6 +144,11 @@ namespace vrt {
   /** Type definition indicating that the input must be <tt>BIG_ENDIAN</tt> or <tt>LITTLE_ENDIAN</tt>.
    *  The values of <tt>BIG_ENDIAN</tt> and <tt>LITTLE_ENDIAN</tt> are defined in <tt>/usr/include/endian.h</tt>.
    */
+
+#define LITTLE_ENDIAN 0x03020100ul
+#define BIG_ENDIAN    0x00010203ul
+	static const union { unsigned char bytes[4]; uint32_t value; } host_order = { { 0, 1, 2, 3 } };
+#define BYTE_ORDER (host_order.value)
   typedef int32_t ByteOrder;
 
   /** Supports fixed-point numbers compatible with VRT.
