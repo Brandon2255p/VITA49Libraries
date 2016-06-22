@@ -23,12 +23,16 @@
 
 #include "VRTObject.h"
 #include <queue>
-#include <pthread.h>
 #include <errno.h>
 #include <iostream>
 //#include <time.h>
+#ifndef __UNIX__
+#include <time.h>
+#include <Winsock2.h>
+#else
+#include <pthread.h>
 #include <sys/time.h>
-
+#endif
 using namespace std;
 
 namespace vrt {

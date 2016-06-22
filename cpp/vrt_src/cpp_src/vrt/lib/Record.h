@@ -25,8 +25,8 @@
 #include "VRTMath.h"
 #include "MetadataBlock.h"
 #include "TimeStamp.h"
-#include "InetAddress.h"
-#include "UUID.h"
+//#include "InetAddress.h"
+#include "UniversallyUID.h"
 #include "HasFields.h"
 #include <vector>
 #include <string.h>    // required for memcpy(..) on GCC4.4/libc6 2.11.1
@@ -124,9 +124,9 @@ namespace vrt {
     /** Packs a {@link TimeStamp} into the record. */
     protected: inline void packTimeStamp (int32_t off, const TimeStamp    &val, IntegerMode epoch) { VRTMath::packTimeStamp(buf, off, val, epoch); }
     /** Packs a {@link InetAddress} into the record. */
-    protected: inline void packInetAddr  (int32_t off, const InetAddress  &val                   ) { VRTMath::packInetAddr( buf, off, val); }
-    /** Packs a {@link UUID} into the record. */
-    protected: inline void packUUID      (int32_t off, const UUID         &val                   ) { VRTMath::packUUID(     buf, off, val); }
+    //protected: inline void packInetAddr  (int32_t off, const InetAddress  &val                   ) { VRTMath::packInetAddr( buf, off, val); }
+    /** Packs a {@link UniversallyUID} into the record. */
+    protected: inline void packUniversallyUID      (int32_t off, const UniversallyUID         &val                   ) { VRTMath::packUniversallyUID(     buf, off, val); }
 
     /** Unpacks an 8-bit integer from the record. */
     protected: inline int8_t        unpackByte      (int32_t off                        ) const { return buf[off]; }
@@ -157,9 +157,9 @@ namespace vrt {
     /** Unpacks a {@link TimeStamp} from the record. */
     protected: inline TimeStamp     unpackTimeStamp (int32_t off, IntegerMode epoch     ) const { return VRTMath::unpackTimeStamp(buf, off, epoch); }
     /** Unpacks a {@link InetAddress} from the record. */
-    protected: inline InetAddress   unpackInetAddr  (int32_t off                        ) const { return VRTMath::unpackInetAddr( buf, off); }
-    /** Unpacks a {@link UUID} from the record. */
-    protected: inline UUID          unpackUUID      (int32_t off                        ) const { return VRTMath::unpackUUID(     buf, off); }
+    //protected: inline InetAddress   unpackInetAddr  (int32_t off                        ) const { return VRTMath::unpackInetAddr( buf, off); }
+    /** Unpacks a {@link UniversallyUID} from the record. */
+    protected: inline UniversallyUID          unpackUniversallyUID      (int32_t off                        ) const { return VRTMath::unpackUniversallyUID(     buf, off); }
     /** Unpacks an bit from the record. */
     protected:        bool          unpackBit       (int32_t off,            int32_t bit) const;
 

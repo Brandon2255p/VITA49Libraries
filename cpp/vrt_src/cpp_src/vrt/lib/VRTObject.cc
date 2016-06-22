@@ -22,7 +22,7 @@
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>     // required for free(..)
-
+#include <vector>
 using namespace vrt;
 
 #if defined(__GNU_COMPILER) && INCLUDE_STACK_TRACE
@@ -80,6 +80,11 @@ static vector<string> getBacktrace () {
 static vector<string> getBacktrace () {
   return vector<string>();
 }
+#endif
+
+#ifndef __UNIX__
+#define strerror_r(errno,buf,len) strerror_s(buf,len,errno)
+#define snprintf(buf, len, fmt, ...) _snprintf_s(buf, len, fmt, __VA_ARGS__)
 #endif
 
 string VRTObject_private::getClassName (const char *name) {
@@ -144,12 +149,12 @@ VRTException::VRTException (const char *fmt, ...) throw() : message("???"), desc
   // should never cause an exception.
   va_list ap;
   for (size_t len = 32; len < 4096; len*=2) {
-    char str[len];
+	std::vector<char> str(len);
     va_start(ap, fmt);
-    size_t n = vsnprintf(str, len, fmt, ap);
+    size_t n = vsnprintf(str.data(), len, fmt, ap);
     va_end(ap);
     if (n < len) {
-      message = string(str);
+      message = string(str.data());
       break;
     }
   }
